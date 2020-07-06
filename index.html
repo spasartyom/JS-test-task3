@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test3</title>
+  <style>
+    .done {
+      text-decoration: line-through;
+      opacity: 0.5;
+    }
+
+    .todo {
+      font-style: italic;
+    }
+
+    .opened {
+      color: blueviolet;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1 style="text-align: center;">ToDo List</h1>
+  </header>
+  <div style="margin: 0 auto; width: 800px;" id="first">
+    <input type="radio" id="opened" name="statusTasks" value="opened">
+    <label for="opened">Открытые</label>
+
+    <input type="radio" id="todo" name="statusTasks" value="todo">
+    <label for="todo">В работе</label>
+
+    <input type="radio" id="done" name="statusTasks" value="done">
+    <label for="done">Решенные</label>
+
+    <input type="radio" id="all" name="statusTasks" value="all" checked>
+    <label for="all">Все</label>
+
+    <button id="addTask" style="margin-left: 20px;">Добавить задачу</button>
+
+    <table style="width: 500px; text-align: center;">
+      <thead>
+        <tr>
+          <th>Название</th>
+          <th>Описание</th>
+          <th>Статус</th>
+        </tr>
+      </thead>
+      <tbody id="tasks">
+      </tbody>
+    </table>
+  </div>
+  <form action="" id="second" style="display: none; margin: 0 auto; width: 700px;">
+    <label for="taskName">Название</label>
+    <input type="text" name="taskName" id="taskName">
+    <br>
+    <label for="taskText">Описание</label>
+    <textarea name="taskText" id="taskText" cols="18" rows="2"></textarea>
+    <br>
+    <input type="submit" value="Добавить" disabled>
+  </form>
+  <script src="./index.js"></script>
+</body>
+
+</html>
