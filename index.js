@@ -2,6 +2,7 @@ const app = () => {
   // задачи добавлены по умолчанию, для демонстрации фильтрации, так как в условии не было сказано про возможность смены статуса у задач
   const state = {
     screen: 'first',
+    curValue: '',
     addProcess: {
       submitDisabled: true,
     },
@@ -17,13 +18,19 @@ const app = () => {
     render(state);
   });
 
-  // поздно увидел про удаление, не успел реализовать
+  // UPDATE: Добавил обработчик для поиска задач по названию
+  const searchInput = document.querySelector('#search');
+  searchInput.addEventListener('input', ({ target }) => {
+    state.curValue = target.value;
+    render(state);
+  });
+
+  // поздно увидел условие про удаление, не успел реализовать
   // handleDelete не работает
-  // UPDATE: повесил обработчик на таблицу, удаление происходит по названию, предполагается, что название задачи уникально.
+  // UPDATE Время 17:20: повесил обработчик на таблицу, удаление происходит по названию, предполагается, что название задачи уникально.
   const tasksTable = document.querySelector('#tasks');
   tasksTable.addEventListener('click', (e) => {
     const name = e.target.textContent;
-    // console.log(name);
     state.todoTasks = state.todoTasks.filter((task) => task.name !== name);
     state.openedTasks = state.openedTasks.filter((task) => task.name !== name);
     state.doneTasks = state.doneTasks.filter((task) => task.name !== name);
@@ -75,9 +82,13 @@ const render = (state) => {
     firstScreen.style.display = 'block';
     secondScreen.style.display = 'none';
     const tasksTable = document.querySelector('#tasks');
-    const openedTasks = state.openedTasks.map((task) => `<tr class="opened"><td>${task.name}</td><td>${task.text}</td><td>${task.status}</td></tr>`).join('');
-    const todoTasks = state.todoTasks.map((task) => `<tr class="todo"><td>${task.name}</td><td>${task.text}</td><td>${task.status}</td></tr>`).join('');
-    const doneTasks = state.doneTasks.map((task) => `<tr class="done"><td>${task.name}</td><td>${task.text}</td><td>${task.status}</td></tr>`).join('');
+    // UPDATE: в изначальном варианте использовался только map(), для реализации поиска задач по названию добавил filter()
+    const openedTasks = state.openedTasks.filter((task) => task.name.toLowerCase().indexOf(state.curValue) !== -1)
+      .map((task) => `<tr class="opened"><td>${task.name}</td><td>${task.text}</td><td>${task.status}</td></tr>`).join('');
+    const todoTasks = state.todoTasks.filter((task) => task.name.toLowerCase().indexOf(state.curValue) !== -1)
+      .map((task) => `<tr class="todo"><td>${task.name}</td><td>${task.text}</td><td>${task.status}</td></tr>`).join('');
+    const doneTasks = state.doneTasks.filter((task) => task.name.toLowerCase().indexOf(state.curValue) !== -1)
+      .map((task) => `<tr class="done"><td>${task.name}</td><td>${task.text}</td><td>${task.status}</td></tr>`).join('');
     if (state.filterStatus === 'opened') {
       tasksTable.innerHTML = `${openedTasks}`;
     }
