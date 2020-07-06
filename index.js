@@ -19,11 +19,16 @@ const app = () => {
 
   // поздно увидел про удаление, не успел реализовать
   // handleDelete не работает
-  const handleDelete = (name) => {
-    console.log('...');
+  // UPDATE: повесил обработчик на таблицу, удаление происходит по названию, предполагается, что название задачи уникально.
+  const tasksTable = document.querySelector('#tasks');
+  tasksTable.addEventListener('click', (e) => {
+    const name = e.target.textContent;
+    // console.log(name);
     state.todoTasks = state.todoTasks.filter((task) => task.name !== name);
+    state.openedTasks = state.openedTasks.filter((task) => task.name !== name);
+    state.doneTasks = state.doneTasks.filter((task) => task.name !== name);
     render(state);
-  }
+  }, true);
 
   const form = document.querySelector('form');
   form.addEventListener('submit', (e) => {
@@ -71,7 +76,7 @@ const render = (state) => {
     secondScreen.style.display = 'none';
     const tasksTable = document.querySelector('#tasks');
     const openedTasks = state.openedTasks.map((task) => `<tr class="opened"><td>${task.name}</td><td>${task.text}</td><td>${task.status}</td></tr>`).join('');
-    const todoTasks = state.todoTasks.map((task) => `<tr class="todo"><td onclick="handleDelete('${task.name}')">${task.name}</td><td>${task.text}</td><td>${task.status}</td></tr>`).join('');
+    const todoTasks = state.todoTasks.map((task) => `<tr class="todo"><td>${task.name}</td><td>${task.text}</td><td>${task.status}</td></tr>`).join('');
     const doneTasks = state.doneTasks.map((task) => `<tr class="done"><td>${task.name}</td><td>${task.text}</td><td>${task.status}</td></tr>`).join('');
     if (state.filterStatus === 'opened') {
       tasksTable.innerHTML = `${openedTasks}`;
